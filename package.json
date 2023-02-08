@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build --outDir docs",
+    "build": "tsc && vite build --outDir docs --base pool-golf-game",
     "preview": "vite preview"
   },
   "devDependencies": {
