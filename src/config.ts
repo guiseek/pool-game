@@ -1,0 +1,6 @@
+export const CONFIG = {
+  GRAVITY: 30,
+  NUM_SPHERES: 3,
+  SPHERE_RADIUS: 0.2,
+  STEPS_PER_FRAME: 5,
+}
