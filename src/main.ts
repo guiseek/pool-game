@@ -37,7 +37,7 @@ if (container) {
 }
 
 const sphereGeometry = new IcosahedronGeometry(CONFIG.SPHERE_RADIUS, 5)
-const sphereMaterial = new MeshLambertMaterial({color: 0xbbbb44})
+const sphereMaterial = new MeshLambertMaterial({color: CONFIG.SPHERE_COLOR})
 
 for (let i = 0; i < CONFIG.NUM_SPHERES; i++) {
   const sphere = new Mesh(sphereGeometry, sphereMaterial)
