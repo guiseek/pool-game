@@ -18,10 +18,12 @@ export function spheresCollisions() {
           .get('vector1')
           .subVectors(s1.collider.center, s2.collider.center)
           .normalize()
+
         const v1 = state
           .get('vector2')
           .copy(normal)
           .multiplyScalar(normal.dot(s1.velocity))
+
         const v2 = state
           .get('vector3')
           .copy(normal)

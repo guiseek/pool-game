@@ -5,12 +5,10 @@ export function playerCollisions() {
     .get('worldOctree')
     .capsuleIntersect(state.get('playerCollider'))
 
-  // playerOnFloor = false
   state.set('playerOnFloor', false)
 
   if (result) {
     state.set('playerOnFloor', result.normal.y > 0)
-    // playerOnFloor = result.normal.y > 0
 
     if (!state.get('playerOnFloor')) {
       state

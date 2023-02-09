@@ -24,6 +24,17 @@ export function updateSpheres(deltaTime: number) {
     const damping = Math.exp(-1.5 * deltaTime) - 1
     sphere.velocity.addScaledVector(sphere.velocity, damping)
 
+    /**
+     * @todo improve rotate
+     */
+    let angle = 0
+    if (sphere.velocity.z > 0.1) {
+      sphere.mesh.rotateZ((angle -= 10))
+    } else if (sphere.velocity.x > 0.1) {
+    } else if (sphere.velocity.y > 0.1) {
+      sphere.mesh.rotateZ((angle += 10))
+    }
+
     playerSphereCollision(sphere)
   })
 

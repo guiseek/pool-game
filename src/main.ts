@@ -6,20 +6,12 @@ import {
   renderer,
   fillLight1,
   inputHandler,
+  updatePlayer,
   updateSpheres,
   directionalLight,
-  updatePlayer,
   teleportPlayerIfOob,
 } from './core'
-import {
-  Mesh,
-  Clock,
-  Color,
-  Sphere,
-  Vector3,
-  IcosahedronGeometry,
-  MeshLambertMaterial,
-} from 'three'
+import {Mesh, Clock, Color, Sphere, Vector3} from 'three'
 import './style.scss'
 import {CONFIG} from './config'
 import {state} from './state'
@@ -27,7 +19,6 @@ import {state} from './state'
 const clock = new Clock()
 
 scene.add(fillLight1)
-
 scene.add(directionalLight)
 
 const container = document.querySelector<HTMLElement>('#container')
@@ -36,26 +27,37 @@ if (container) {
   container.appendChild(renderer.domElement)
 }
 
-const sphereGeometry = new IcosahedronGeometry(CONFIG.SPHERE_RADIUS, 5)
-const sphereMaterial = new MeshLambertMaterial({color: CONFIG.SPHERE_COLOR})
-
-for (let i = 0; i < CONFIG.NUM_SPHERES; i++) {
-  const sphere = new Mesh(sphereGeometry, sphereMaterial)
-  sphere.castShadow = true
-  sphere.receiveShadow = true
-  scene.add(sphere)
-
-  state.get('spheres').push({
-    mesh: sphere,
-    collider: new Sphere(new Vector3(0, -100, 0), CONFIG.SPHERE_RADIUS),
-    velocity: new Vector3(),
-  })
-}
-
-inputHandler.init()
-
 const loader = new GLTFLoader().setPath('./gltf/')
-loader.load('collision-world2.glb', (gltf) => {
+
+/**
+ * Basketball
+ */
+loader.loadAsync('ball.glb').then((gltf) => {
+  const [ball] = gltf.scene.children
+  for (let i = 0; i < CONFIG.NUM_SPHERES; i++) {
+    // const sphere = new Mesh(
+    //   new IcosahedronGeometry(CONFIG.SPHERE_RADIUS, 5),
+    //   new MeshLambertMaterial({color: CONFIG.SPHERE_COLOR})
+    // )
+    const sphere = ball.clone(true)
+    sphere.receiveShadow = true
+    sphere.castShadow = true
+    sphere.rotation.x = 90
+    sphere.rotation.y = 90
+    scene.add(sphere)
+    if (sphere instanceof Mesh) {
+      state.get('spheres').push({
+        mesh: sphere,
+        collider: new Sphere(new Vector3(0, -100, 0), CONFIG.SPHERE_RADIUS),
+        velocity: new Vector3(),
+      })
+    }
+  }
+
+  inputHandler.init()
+})
+
+loader.loadAsync('collision-world3.glb').then((gltf) => {
   scene.add(gltf.scene)
 
   state.get('worldOctree').fromGraphNode(gltf.scene)

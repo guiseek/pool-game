@@ -23,6 +23,5 @@ export function throwBall() {
   sphere.velocity.copy(state.get('playerDirection')).multiplyScalar(impulse)
   sphere.velocity.addScaledVector(state.get('playerVelocity'), 2)
 
-  // sphereIdx = (sphereIdx + 1) % spheres.length
   state.set('sphereIdx', (sphereIdx + 1) % spheres.length)
 }
